@@ -1,0 +1,33 @@
+{
+  "name": "ayedii-pryoyecto-iii",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IsacMSirias/AyEDII-Pryoyecto-III.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IsacMSirias/AyEDII-Pryoyecto-III/issues"
+  },
+  "homepage": "https://github.com/IsacMSirias/AyEDII-Pryoyecto-III#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "webpack": "^5.73.0",
+    "webpack-dev-middleware": "^5.3.3"
+  }
+}
