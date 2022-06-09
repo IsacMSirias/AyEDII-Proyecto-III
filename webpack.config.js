@@ -1,5 +1,5 @@
 module.exports = {
-    modo: 'development',
+    mode: 'development',
     entry: __dirname + '/src',
     output: {
         path: '/',
@@ -10,8 +10,8 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                query: {
-                    presets: ['env', 'react']
+                options: {
+                    presets: ['es2015', 'react']
                 }
             }
         ]
