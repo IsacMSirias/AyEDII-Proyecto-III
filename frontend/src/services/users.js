@@ -8,8 +8,8 @@ class UsersDataService {
     get(user, password) {
         return http.get('/id', {
         params: {
-                "name": 'Usuario',
-                "password": 'agregadoporpost123'
+                name: user,
+                password: password
             }
         });
     }

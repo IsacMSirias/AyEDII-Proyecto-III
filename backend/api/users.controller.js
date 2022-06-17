@@ -59,8 +59,8 @@ export default class UsersController {
   }
   static async apiGetIdUser(req, res, next) {
     try {
-      const name = req.body.name
-      const password = req.body.password
+      const name = req.query.name
+      const password = req.query.password
 
       const IdResponse = await UsersDAO.getIdUser(name,password)
       if(!IdResponse){
