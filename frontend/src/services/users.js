@@ -18,21 +18,18 @@ class UsersDataService {
         return http.get(`restaurants?${by}=${query}&page=${page}`);
     } 
 
-    createReview(data) {
-        return http.post("/review-new", data);
+    createDocument(data) {
+        return http.post("/document", data);
     }
 
-    updateReview(data) {
-        return http.put("/review-edit", data);
+    updateDocument(data) {
+        return http.put("/document", data);
     }
 
-    deleteReview(id, userId) {
-        return http.delete(`/review-delete?id=${id}`, {data:{user_id: userId}});
+    deleteDocument(id) {
+        return http.delete(`/document?id=${id}`);
     }
 
-    getCuisines(id) {
-        return http.get(`/cuisines`);
-    }
 }
 
 export default new UsersDataService();

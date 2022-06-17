@@ -16,10 +16,9 @@ export default class DocumentsDAO {
     }
   }
 
-  static async addDocument(userId, doc, document, date, tags ) {
+  static async addDocument(userId, docname, document, date, tags ) {
     try {
-      const documentDoc = { name: doc.name,
-          doc_id: doc._id,
+      const documentDoc = { name: docname,
           date: date,
           file: document,
           tags: tags,
@@ -33,10 +32,10 @@ export default class DocumentsDAO {
     }
   }
 
-  static async updateDocument(documentId, docId, file, date, tags) {
+  static async updateDocument(documentId, file, date, tags) {
     try {
       const updateResponse = await documents.updateOne(
-        { doc_id: docId, _id: ObjectId(documentId)},
+        { _id: ObjectId(documentId)},
         { $set: { file: file, date: date, tags: tags} },
       )
 
@@ -52,7 +51,6 @@ export default class DocumentsDAO {
     try {
       const deleteResponse = await documents.deleteOne({
         _id: ObjectId(documentId),
-        doc_id: docId,
       })
 
       return deleteResponse

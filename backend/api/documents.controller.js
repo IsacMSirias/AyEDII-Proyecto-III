@@ -7,16 +7,14 @@ export default class DocumentsController {
   
       const document = req.body.file
   
-      const docInfo = {
-        name: req.body.name,
-        _id: req.body.doc_id
-      }
+      const docName = req.body.name
+      
       const date = new Date()
       const tags = req.body.tags
       
       const DocumentResponse = await DocumentsDAO.addDocument(
         userId,
-        docInfo,
+        docName,
         document,
         date,
         tags,
@@ -37,7 +35,6 @@ export default class DocumentsController {
 
       const documentResponse = await DocumentsDAO.updateDocument(
         documentId,
-        req.body.doc_id,
         file,
         date,
         tags,
@@ -64,11 +61,9 @@ export default class DocumentsController {
   static async apiDeleteDocument(req, res, next) {
     try {
       const documentId = req.query.id
-      const docId = req.body.doc_id
       console.log(documentId)
       const documentResponse = await DocumentsDAO.deleteDocument(
         documentId,
-        docId,
       )
       res.json({ status: "success" })
     } catch (e) {
