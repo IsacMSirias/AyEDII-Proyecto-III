@@ -1,21 +1,25 @@
 import DocumentsDAO from "../dao/documentsDAO.js"
 
 export default class DocumentsController {
-  static async apiPostDocument(req, res, next) {
+  static async apiPostDocument(req, res, _next) {
     try {
       const userId = req.body.user_id
+  
       const document = req.body.file
+  
       const docInfo = {
         name: req.body.name,
         _id: req.body.doc_id
       }
       const date = new Date()
-
+      const tags = req.body.tags
+      
       const DocumentResponse = await DocumentsDAO.addDocument(
         userId,
         docInfo,
         document,
         date,
+        tags,
       )
       res.json({ status: "success" })
     } catch (e) {
@@ -27,13 +31,17 @@ export default class DocumentsController {
     try {
       const documentId = req.body.document_id
       const file = req.body.file
+      const tags = req.body.tags
       const date = new Date()
+      
 
       const documentResponse = await DocumentsDAO.updateDocument(
         documentId,
         req.body.doc_id,
         file,
         date,
+        tags,
+        
       )
 
       var { error } = documentResponse

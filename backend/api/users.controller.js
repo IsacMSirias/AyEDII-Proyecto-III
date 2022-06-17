@@ -31,13 +31,45 @@ export default class UsersController {
   static async apiGetUserById(req, res, next) {
     try {
       let id = req.params.id || {}
-      let user = await UsersDAO.getUserByID(id)
+      let user = await UsersDAO.getUsersByID(id)
       if (!user) {
         res.status(404).json({ error: "Not found" })
         return
       }
       res.json(user)
     } catch (e) {
+      console.log(`api, ${e}`)
+      res.status(500).json({ error: e })
+    }
+  }
+  static async apiPostUser(req, res, next){
+    try {
+      const name = req.body.name
+      const password = req.body.password
+      
+      
+      const UserResponse = await UsersDAO.addUser(
+        name,
+        password,
+      )
+      res.json({ status: "success" })
+    } catch (e) {
+      res.status(500).json({ error: e.message })
+    }
+  }
+  static async apiGetIdUser(req, res, next) {
+    try {
+      const name = req.body.name
+      const password = req.body.password
+
+      const IdResponse = await UsersDAO.getIdUser(name,password)
+      if(!IdResponse){
+        res.status(404).json({ error: "Not found" })
+        return
+      }
+      res.json(IdResponse)
+    }
+    catch (e){
       console.log(`api, ${e}`)
       res.status(500).json({ error: e })
     }

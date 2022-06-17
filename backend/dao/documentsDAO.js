@@ -4,6 +4,7 @@ const ObjectId = mongodb.ObjectId
 let documents
 
 export default class DocumentsDAO {
+  
   static async injectDB(conn) {
     if (documents) {
       return
@@ -15,13 +16,15 @@ export default class DocumentsDAO {
     }
   }
 
-  static async addDocument(userId, doc, document, date) {
+  static async addDocument(userId, doc, document, date, tags ) {
     try {
       const documentDoc = { name: doc.name,
           doc_id: doc._id,
           date: date,
           file: document,
+          tags: tags,
           user_id: ObjectId(userId), }
+      console.log(documentDoc)
 
       return await documents.insertOne(documentDoc)
     } catch (e) {
@@ -30,11 +33,11 @@ export default class DocumentsDAO {
     }
   }
 
-  static async updateDocument(documentId, docId, file, date) {
+  static async updateDocument(documentId, docId, file, date, tags) {
     try {
       const updateResponse = await documents.updateOne(
         { doc_id: docId, _id: ObjectId(documentId)},
-        { $set: { file: file, date: date  } },
+        { $set: { file: file, date: date, tags: tags} },
       )
 
       return updateResponse

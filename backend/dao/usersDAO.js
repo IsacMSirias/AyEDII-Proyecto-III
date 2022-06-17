@@ -15,7 +15,18 @@ export default class UsersDAO {
       )
     }
   }
+  static async addUser(name,password ) {
+    try {
+      const NewUser = { name: name,
+          password: password, }
+      console.log(NewUser)
 
+      return await users.insertOne(NewUser)
+    } catch (e) {
+      console.error(`Unable to post User: ${e}`)
+      return { error: e }
+    }
+  }
   static async getUsers({
     filters = null,
     page = 0,
@@ -109,5 +120,16 @@ export default class UsersDAO {
       return names
     }
   }
-
-}
+  static async getIdUser(name,password) 
+      {
+      try {
+       const userIdResponse = await users
+          .findOne({ name: name, password:password })
+        return userIdResponse
+      } catch (e) {
+        console.error(`Unable to issue find command, ${e}`)
+        resizeBy.json({ status: "not found" })
+      }
+ 
+    }
+  }
