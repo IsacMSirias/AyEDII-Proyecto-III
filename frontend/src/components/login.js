@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import UsersDataService from '../services/users';
 
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
 const Login = props => {
+
+  const [user, setUser] = useState('')
+  const [password, setPassword] = useState('')
+
+  async function verifyUser() {
+    console.info(UsersDataService.get(user, password))
+    //UsersDataService.get(user, password);
+  }
 
   return (
     <div className="h-screen flex align-items-center justify-content-center">
@@ -16,12 +25,12 @@ const Login = props => {
 
             <div>
                 <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
-                <InputText id="email" type="text" className="w-full mb-3" />
+                <InputText id="email" type="text" className="w-full mb-3" value={user} onChange={(e) => setUser(e.target.user)} />
 
                 <label htmlFor="password" className="block text-900 font-medium mb-2">Contraseña</label>
-                <InputText id="password" type="password" className="w-full mb-3" />
+                <InputText id="password" type="password" className="w-full mb-3" value={password} onChange={(e) => setPassword(e.target.password)} />
 
-                <Button label="Log in" icon="pi pi-user" className="w-full" />
+                <Button label="Log in" icon="pi pi-user" className="w-full" onClick={verifyUser}/>
             </div>
         </div>
     </div>

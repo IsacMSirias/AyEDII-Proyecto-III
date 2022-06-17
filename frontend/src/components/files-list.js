@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import axios from "axios";
+import UsersDataService from '../services/users';
 
 import { Toolbar } from 'primereact/toolbar';
 import { DataTable } from 'primereact/datatable';
@@ -33,7 +33,7 @@ const FilesList = props => {
     const cancelOptions = {icon: 'pi pi-fw pi-times', className: 'custom-cancel-btn p-button-danger p-button-outlined'};
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/v1/restaurants').then((res) => setFiles(res.data.restaurants));
+        UsersDataService.getUsers().then((res) => setFiles(res.data.users));
     })
 
     const onUpload = () => {
@@ -110,7 +110,7 @@ const FilesList = props => {
         return (
             <div className="flex align-items-center flex-column">
                 <i className="pi pi-image mt-3 p-5" style={{'fontSize': '5em', borderRadius: '50%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)'}}></i>
-                <span style={{'fontSize': '1.2em', color: 'var(--text-color-secondary)'}} className="my-5">Drag and Drop Image Here</span>
+                <span style={{'fontSize': '1.2em', color: 'var(--text-color-secondary)'}} className="my-5">Drag and Drop a File Here</span>
             </div>
         )
     }
@@ -130,13 +130,12 @@ const FilesList = props => {
 
                 <DataTable
                     value={files} header={header} responsiveLayout='scroll' selection={selectedFiles}
-                    onSelectionChange={e => setSelectedFiles(e.value)} dataKey="restaurant_id" stripedRows
+                    onSelectionChange={e => setSelectedFiles(e.value)} dataKey="_id" stripedRows
                 >
                     <Column selectionMode="multiple" headerStyle={{width: '3em'}}></Column>
-                    <Column field="restaurant_id" header="Id"></Column>
+                    <Column field="_id" header="Id"></Column>
                     <Column field="name" header="Name"></Column>
-                    <Column field="cuisine" header="Cuisine"></Column>
-                    <Column field="borough" header="Borough"></Column>
+                    <Column field="password" header="Password"></Column>
                 </DataTable>
             </div>
 
