@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import UsersDataService from '../services/users';
 
@@ -13,17 +13,22 @@ const Login = props => {
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
   const toast = useRef(null)
-
+  
+  function LoginPage() {
+    let history = useHistory();
+    history.replace('/files')
+  }
+  
   async function verifyUser() {
     UsersDataService.get(user, password).then((res) => setId(res.data._id));
     if (id.length === 0) {
       toast.current.show({severity: 'error', summary: 'Error al logearse', detail: 'Tu contraseña es incorrecta o el usuario no existe'});
     }
     else {
-      props.history.push('/files')
+      LoginPage()
     }
   }
-
+  
   return (
     <div className="h-screen flex align-items-center justify-content-center">
         <Toast ref={toast} />
@@ -39,7 +44,7 @@ const Login = props => {
                 <InputText id="user" type="text" className="w-full mb-3" value={user} onChange={(e) => setUser(e.target.value)} />
 
                 <label htmlFor="password" className="block text-900 font-medium mb-2">Contraseña</label>
-                <InputText id="password" type="text" className="w-full mb-3" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <InputText id="password" type="password" className="w-full mb-3" value={password} onChange={(e) => setPassword(e.target.value)} />
 
                 <Button label="Log in" icon="pi pi-user" className="w-full" onClick={verifyUser}/>
             </div>
