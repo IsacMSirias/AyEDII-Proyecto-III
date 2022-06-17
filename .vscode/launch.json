@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/ims/Documentos/GitHub/AyEDII-Proyecto-III/Compesion algorithms",
-      "program": "/home/ims/Documentos/GitHub/AyEDII-Proyecto-III/Compesion algorithms/build/Debug/outDebug",
+      "cwd": "/home/ims/Documentos/GitHub/AyEDII-Proyecto-III/Compesion algorithms/LZ78",
+      "program": "/home/ims/Documentos/GitHub/AyEDII-Proyecto-III/Compesion algorithms/LZ78/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
