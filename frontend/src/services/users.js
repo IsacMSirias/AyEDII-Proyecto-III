@@ -14,9 +14,20 @@ class UsersDataService {
         });
     }
 
+    postUser(user, password) {
+        return http.post('', {
+            name: user,
+            password: password
+        });
+    }
+
     find(query, by = "name", page = 0) {
         return http.get(`restaurants?${by}=${query}&page=${page}`);
-    } 
+    }
+    
+    getDocuments(id) {
+        return http.get(`/id/${id}`)
+    }
 
     createDocument(data) {
         return http.post("/document", data);

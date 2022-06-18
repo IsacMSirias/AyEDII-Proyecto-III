@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from '../UserContext';
+
+import UsersDataService from '../services/users';
 
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
 const Signup = props => {
+
+  const { setId } = useContext(UserContext);
+  const { setLoggedIn } = useContext(UserContext);
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+
+  async function createUser () {
+    UsersDataService.postUser(user, password).then((res) => setId(res.data._id));
+    setLoggedIn(true);
+  }
 
   return (
     <div className="h-screen flex align-items-center justify-content-center">
@@ -13,13 +26,13 @@ const Signup = props => {
             </div>
 
             <div>
-                <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
-                <InputText id="email" type="text" className="w-full mb-3" />
+                <label htmlFor="user" className="block text-900 font-medium mb-2">User</label>
+                <InputText id="user" type="text" className="w-full mb-3" value={user} onChange={(e) => setUser(e.target.value)} />
 
                 <label htmlFor="password" className="block text-900 font-medium mb-2">Password</label>
-                <InputText id="password" type="password" className="w-full mb-3" />
+                <InputText id="password" type="password" className="w-full mb-3" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                <Button label="Sign in" icon="pi pi-user" className="w-full" />
+                <Button label="Sign in" icon="pi pi-user" className="w-full" onClick={createUser} />
             </div>
         </div>
     </div>

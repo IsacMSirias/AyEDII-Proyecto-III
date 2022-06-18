@@ -9,7 +9,8 @@ export default class DocumentsController {
   
       const docName = req.body.name
       
-      const date = new Date()
+      const date = new Date().toLocaleString()
+
       const tags = req.body.tags
       
       const DocumentResponse = await DocumentsDAO.addDocument(
@@ -30,7 +31,7 @@ export default class DocumentsController {
       const documentId = req.body.document_id
       const file = req.body.file
       const tags = req.body.tags
-      const date = new Date()
+      const date = new Date().toLocaleString()
       
 
       const documentResponse = await DocumentsDAO.updateDocument(

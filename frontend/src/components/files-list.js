@@ -1,5 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import UsersDataService from '../services/users';
+
+import { UserContext } from '../UserContext';
 
 import { Toolbar } from 'primereact/toolbar';
 import { DataTable } from 'primereact/datatable';
@@ -12,32 +14,34 @@ import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
  
 const FilesList = props => {
-
+    
     const algorithms = [
         {label: 'Huffman', value: 'Huffman'},
         {label: 'LZW', value: 'LZW'},
         {label: 'LZ77', value: 'LZ77'},
         {label: 'LZ78', value: 'LZ78'}
     ];
-
+    
+    const { id, setId } = useContext(UserContext);
+    const { setLoggedIn } = useContext(UserContext);
     const [algorithm, setAlgorithm] = useState('')
     const [files, setFiles] = useState([])
     const [selectedFiles, setSelectedFiles] = useState([])
     const [fileUploadDialog, setFileUploadDialog] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState(false);
     const toast = useRef(null);
-    const fileUploadRef = useRef(null);
 
     const chooseOptions = {icon: 'pi pi-fw pi-plus', className: 'custom-choose-btn p-button-outlined'};
     const uploadOptions = {icon: 'pi pi-fw pi-cloud-upload', className: 'custom-upload-btn p-button-success p-button-outlined'};
     const cancelOptions = {icon: 'pi pi-fw pi-times', className: 'custom-cancel-btn p-button-danger p-button-outlined'};
 
     useEffect(() => {
-        UsersDataService.getUsers().then((res) => setFiles(res.data.users));
+        UsersDataService.getDocuments(id).then((res) => setFiles(res.data.documents));
     })
 
-    const onUpload = () => {
-        toast.current.show({severity: 'info', summary: 'Success', detail: 'File Uploaded'});
+    function logout() {
+        setId('');
+        setLoggedIn(false);
     }
 
     const openFileUpload = () => {
@@ -56,6 +60,13 @@ const FilesList = props => {
         setDeleteDialog(false);
     }
 
+    function deleteDocuments() {
+        for (const i in selectedFiles) {
+            UsersDataService.deleteDocument(selectedFiles[i]._id);
+            hideDeleteDialog()
+        }
+    }
+
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
@@ -69,7 +80,7 @@ const FilesList = props => {
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="Sign out" icon="pi pi-sign-out" className="p-button-danger" />
+                <Button label="Sign out" icon="pi pi-sign-out" className="p-button-danger" onClick={logout} />
             </React.Fragment>
         )
     }
@@ -77,7 +88,7 @@ const FilesList = props => {
     const deleteDialogFooter = (
         <React.Fragment>
             <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteDocuments}/>
         </React.Fragment>
     );
 
@@ -90,7 +101,6 @@ const FilesList = props => {
             <div>
                 <div className="flex align-items-center flex-wrap">
                     <div className="flex align-items-center" style={{width: '40%'}}>
-                        <img alt={file.name} role="presentation" src={file.objectURL} width={100} />
                         <span className="flex flex-column text-left ml-3">
                             {file.name}
                             <small>{new Date().toLocaleDateString()}</small>
@@ -114,6 +124,33 @@ const FilesList = props => {
             </div>
         )
     }
+
+    const tagsBodyTemplate = (rowData) => {
+        var indents = [];
+        for (const i in rowData.tags) {
+            indents.push(<Tag className="mr-2" value={rowData.tags[i]} />)
+        }
+        return indents
+    }
+
+    const customBase64Uploader = async (event) => {
+        // convert file to base64 encoded 
+        const file = event.files[0];
+        const reader = new FileReader();
+        let blob = await fetch(file.objectURL).then(r => r.blob()); //blob:url
+        reader.readAsDataURL(blob); 
+        reader.onloadend = function () {
+            const base64data = reader.result;
+            UsersDataService.createDocument({
+                user_id: id,
+                name: event.files[0].name,
+                file: base64data.substring(37),
+                tags: [event.files[0].size.toString()+' bytes']
+            })
+            toast.current.show({severity: 'info', summary: 'Success', detail: 'File Uploaded'});
+            hideDialog();
+        }
+    }
     
     const header = (
         <div className="table-header text-2xl font-norma">
@@ -123,7 +160,7 @@ const FilesList = props => {
 
     return (
         <div>
-            <Toast ref={toast}></Toast>
+            <Toast ref={toast} />
 
             <div className="pt-2 pb-2 pl-2 pr-2">
                 <Toolbar className="mb-2" left={leftToolbarTemplate} right={rightToolbarTemplate} ></Toolbar>
@@ -133,15 +170,15 @@ const FilesList = props => {
                     onSelectionChange={e => setSelectedFiles(e.value)} dataKey="_id" stripedRows
                 >
                     <Column selectionMode="multiple" headerStyle={{width: '3em'}}></Column>
-                    <Column field="_id" header="Id"></Column>
                     <Column field="name" header="Name"></Column>
-                    <Column field="password" header="Password"></Column>
+                    <Column header="Tags" body={tagsBodyTemplate}></Column>
+                    <Column field="date" header="Date" dataType="date"></Column>
                 </DataTable>
             </div>
 
             <Dialog visible={fileUploadDialog} style={{ width: '700px' }} header="Upload file" modal className="p-fluid" onHide={hideDialog}>
-            <FileUpload ref={fileUploadRef} name="demo[]" url="https://primefaces.org/primereact/showcase/upload.php"
-                    onUpload={onUpload} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
+            <FileUpload name="demo" customUpload uploadHandler={customBase64Uploader} 
+                    itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                     chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
             </Dialog>
 

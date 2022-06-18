@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useRef, useState, useContext } from "react";
+import { UserContext } from '../UserContext';
 
 import UsersDataService from '../services/users';
 
@@ -8,24 +8,19 @@ import { Button } from 'primereact/button';
 import { Toast } from "primereact/toast";
 
 const Login = props => {
-
-  const [id, setId] = useState('')
-  const [user, setUser] = useState('')
-  const [password, setPassword] = useState('')
-  const toast = useRef(null)
+  const { id, setId } = useContext(UserContext);
+  const { setLoggedIn } = useContext(UserContext);
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const toast = useRef(null);
   
-  function LoginPage() {
-    let history = useHistory();
-    history.replace('/files')
-  }
   
   async function verifyUser() {
     UsersDataService.get(user, password).then((res) => setId(res.data._id));
-    if (id.length === 0) {
+    if (id.length !== 0) {
+      setLoggedIn(true)
+    } else {
       toast.current.show({severity: 'error', summary: 'Error al logearse', detail: 'Tu contraseña es incorrecta o el usuario no existe'});
-    }
-    else {
-      LoginPage()
     }
   }
   
