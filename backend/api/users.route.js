@@ -7,6 +7,7 @@ router.route("/").get(UsersCtrl.apiGetUsers)
                  .post(UsersCtrl.apiPostUser)
 router.route("/id/:id").get(UsersCtrl.apiGetUserById)
 router.route("/id").get(UsersCtrl.apiGetIdUser)
+router.route("/id/tags/:id").get(UsersCtrl.apiGetUserByIdWhitTags)
 
 
 router
