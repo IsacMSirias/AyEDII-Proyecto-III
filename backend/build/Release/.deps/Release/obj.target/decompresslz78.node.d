@@ -1,0 +1,1 @@
+cmd_Release/obj.target/decompresslz78.node := g++ -o Release/obj.target/decompresslz78.node -shared -pthread -rdynamic -m64  -Wl,-soname=decompresslz78.node -Wl,--start-group Release/obj.target/decompresslz78/src/decompressLZ78.o -Wl,--end-group 

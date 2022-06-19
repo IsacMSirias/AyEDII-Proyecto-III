@@ -1,0 +1,1 @@
+cmd_Release/compresslz78.node := ln -f "Release/obj.target/compresslz78.node" "Release/compresslz78.node" 2>/dev/null || (rm -rf "Release/compresslz78.node" && cp -af "Release/obj.target/compresslz78.node" "Release/compresslz78.node")
