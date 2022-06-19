@@ -3,24 +3,26 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 const { compress_LZ77 } = require('../build/Release/compresslz77.node');
-const { decompress_LZ77 } = require('../build/Release/decompresslz77.node');
 const { compress_LZ78 } = require('../build/Release/compresslz78.node');
-const { decompress_LZ78 } = require('../build/Release/decompresslz78.node');
 
 export default class DocumentsController {
   static async apiPostDocument(req, res, _next) {
     try {
       var compressData;
-      if (true) {
-        compressData = compress_LZ78(req.body.file);
-      } if (req.body.tags[1]==='LZ77') {
-        compressData = compress_LZ77(req.body.file);
-      } else {
-        compressData = req.body.file;
+      switch (req.body.tags[1]) {
+        case 'LZ77':
+          compressData = compress_LZ77(req.body.file);
+          break;
+        case 'LZ78':
+          compressData = compress_LZ78(req.body.file);
+          break;
+        default:
+          compressData = req.body.file;
+          break;
       }
       const userId = req.body.user_id
       const docName = req.body.name
-      const document = compress_LZ78(req.body.file)
+      const document = compressData
       const date = new Date().toLocaleString()
       const tags = req.body.tags
       const type = req.body.type   

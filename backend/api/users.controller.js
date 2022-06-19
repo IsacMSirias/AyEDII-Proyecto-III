@@ -1,4 +1,10 @@
 import UsersDAO from "../dao/usersDAO.js"
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
+const { decompress_LZ77 } = require('../build/Release/decompresslz77.node');
+const { decompress_LZ78 } = require('../build/Release/decompresslz78.node');
+
 
 export default class UsersController {
   static async apiGetUsers(req, res, next) {
@@ -35,6 +41,22 @@ export default class UsersController {
       if (!user) {
         res.status(404).json({ error: "Not found" })
         return
+      }
+      console.log(user.documents)
+      for (const file in user.documents) {
+        var decompressData;
+        switch (user.documents[file].tags[1]) {
+          case 'LZ77':
+            decompressData = decompress_LZ77(user.documents[file].file);
+            break;
+          case 'LZ78':
+            decompressData = decompress_LZ78(user.documents[file].file);
+            break;
+          default:
+            decompressData = user.documents[file].file;
+            break;
+        }
+        user.documents[file].file = decompressData;
       }
       res.json(user)
     } catch (e) {
@@ -97,7 +119,6 @@ export default class UsersController {
           }
         }
       
-      console.log(documentswhittag)
       res.json(documentswhittag)
     } catch (e) {
       console.log(`api, ${e}`)
