@@ -14,9 +14,8 @@ class UsersDataService {
         });
     }
     getDocumentsWhitTags(id, tags) {
-        return http.get('/id/tags', {
+        return http.get(`/id/tags/${id}`, {
         params: {
-                id: id,
                 tags: tags
             }
         });

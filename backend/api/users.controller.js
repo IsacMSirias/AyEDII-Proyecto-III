@@ -79,7 +79,7 @@ export default class UsersController {
       var documentswhittag = {}
       documentswhittag.documents=[]
       let id = req.params.id 
-      let tags = req.params.tags   
+      let tags = req.query.tags   
       let user = await UsersDAO.getUsersByIDWhitTags(id)
       if (!user) {
         res.status(404).json({ error: "Not found" })

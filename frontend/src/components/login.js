@@ -36,7 +36,7 @@ const Login = props => {
             </div>
 
             <div>
-                <label htmlFor="user" className="block text-900 font-medium mb-2">User</label>
+                <label htmlFor="user" className="block text-900 font-medium mb-2">Usuario</label>
                 <InputText id="user" type="text" className="w-full mb-3" value={user} onChange={(e) => setUser(e.target.value)} />
 
                 <label htmlFor="password" className="block text-900 font-medium mb-2">Contraseña</label>

@@ -32,6 +32,7 @@ const FilesList = props => {
     const [fileUploadDialog, setFileUploadDialog] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [tagDialog, setTagDialog] = useState(false);
+    const [tagSearch, setTagSearch] = useState(false);
     const fileUploadRef = useRef(null);
     const toast = useRef(null);
 
@@ -40,7 +41,14 @@ const FilesList = props => {
     const cancelOptions = {icon: 'pi pi-fw pi-times', className: 'custom-cancel-btn p-button-danger p-button-outlined'};
 
     useEffect(() => {
-        UsersDataService.getDocuments(id).then((res) => setFiles(res.data.documents));
+        if (tagSearch) {
+            UsersDataService.getDocumentsWhitTags(id, tag).then((res) => setFiles(res.data.documents));
+            if (tag === '') {
+                setTagSearch(false);
+            }
+        } else {
+            UsersDataService.getDocuments(id).then((res) => setFiles(res.data.documents));
+        }
     })
 
     function logout() {
@@ -206,16 +214,22 @@ const FilesList = props => {
         const blob = b64toBlob(selectedFiles[0].file, 'text/html');
         saveAs(blob, selectedFiles[0].name)
     }
+
     
     const header = (
     <div className="flex justify-content-between align-items-center">
         <h1 className="m-0">Files</h1>
         <span className="p-input-icon-left">
             <i className="pi pi-search" />
-            <InputText placeholder="Tag Search" />
+            <InputText placeholder="Tag Search" value={tag} onChange={(e) => setTag(e.target.value)} />
+            <Button label="Search" className="p-button-lg p-button-text" onClick={searchByTag}/>
         </span>
     </div>
     );
+
+    function searchByTag () {
+        setTagSearch(true);
+    }
 
     return (
         <div>
@@ -231,7 +245,7 @@ const FilesList = props => {
                     <Column selectionMode="multiple" headerStyle={{width: '3em'}}></Column>
                     <Column field="name" header="Name"></Column>
                     <Column header="Tags" body={tagsBodyTemplate}></Column>
-                    <Column field="date" header="Date" dataType="date"></Column>
+                    <Column field="date" header="Last Modified" dataType="date"></Column>
                 </DataTable>
             </div>
 

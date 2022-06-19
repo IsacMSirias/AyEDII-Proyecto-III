@@ -29,9 +29,7 @@ MongoClient.connect(
     .then(async client => {
         await UsersDAO.injectDB(client)
         await DocumentsDAO.injectDB(client)
-        console.log(compress_LZ77('ola12312312312'))
         app.listen(port, () => {
-            console.log(compress_LZ78('ola12312312312'))
             console.log('listening on port ' + port)
         })
     })
