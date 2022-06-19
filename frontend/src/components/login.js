@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { UserContext } from '../UserContext';
 
 import UsersDataService from '../services/users';
@@ -14,14 +14,15 @@ const Login = props => {
   const [password, setPassword] = useState('');
   const toast = useRef(null);
   
-  
-  async function verifyUser() {
-    UsersDataService.get(user, password).then((res) => setId(res.data._id));
+  useEffect(() => {
     if (id.length !== 0) {
       setLoggedIn(true)
-    } else {
-      toast.current.show({severity: 'error', summary: 'Error al logearse', detail: 'Tu contraseña es incorrecta o el usuario no existe'});
     }
+  })
+    
+  async function verifyUser() {
+    UsersDataService.get(user, password).then((res) => setId(res.data._id));
+    toast.current.show({severity: 'error', summary: 'Error al logearse', detail: 'Tu contraseña es incorrecta o el usuario no existe'});
   }
   
   return (

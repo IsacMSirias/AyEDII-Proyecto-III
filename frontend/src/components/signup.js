@@ -15,7 +15,7 @@ const Signup = props => {
 
   async function createUser () {
     UsersDataService.postUser(user, password).then((res) => setId(res.data._id));
-    setLoggedIn(true);
+    setLoggedIn(false);
   }
 
   return (
