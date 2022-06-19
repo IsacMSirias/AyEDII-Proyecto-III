@@ -15,7 +15,6 @@ import "primeicons/primeicons.css";
 PrimeReact.ripple = true;
 
 function App() {
-  //sconst history = useHistory();
 
   const [id, setId] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);

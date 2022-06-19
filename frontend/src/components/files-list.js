@@ -93,7 +93,7 @@ const FilesList = props => {
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="Sign out" icon="pi pi-sign-out" className="p-button-danger" onClick={logout} />
+                <Button label="Sign out" icon="pi pi-sign-out" className="p-button-sm p-button-danger" onClick={logout} />
             </React.Fragment>
         )
     }
@@ -158,7 +158,7 @@ const FilesList = props => {
     const tagsBodyTemplate = (rowData) => {
         var indents = [];
         for (const i in rowData.tags) {
-            indents.push(<Tag className="mr-2" value={rowData.tags[i]} />)
+            indents.push(<Tag className="mr-2" severity="warning" value={rowData.tags[i]} />)
         }
         return indents
     }
@@ -212,7 +212,7 @@ const FilesList = props => {
         <h1 className="m-0">Files</h1>
         <span className="p-input-icon-left">
             <i className="pi pi-search" />
-            <InputText placeholder="Keyword Search" />
+            <InputText placeholder="Tag Search" />
         </span>
     </div>
     );
@@ -226,7 +226,7 @@ const FilesList = props => {
 
                 <DataTable
                     value={files} header={header} responsiveLayout='scroll' selection={selectedFiles}
-                    onSelectionChange={e => setSelectedFiles(e.value)} dataKey="_id" stripedRows
+                    onSelectionChange={e => setSelectedFiles(e.value)} dataKey="_id"
                 >
                     <Column selectionMode="multiple" headerStyle={{width: '3em'}}></Column>
                     <Column field="name" header="Name"></Column>

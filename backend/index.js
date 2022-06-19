@@ -12,7 +12,6 @@ MongoClient.connect(
     process.env.USERSREVIEWS_DB_URI,
     {
         maxPoolSize: 50,
-        wtimeoutMS: 2500,
         useNewUrlParser: true }
     )
     .catch(err => {
