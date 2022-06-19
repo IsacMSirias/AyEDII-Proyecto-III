@@ -109,6 +109,50 @@ export default class UsersDAO {
       throw e
     }
   }
+  static async getUsersByIDWhitTags(id,tags,lentags) {
+    try {
+      const pipeline = [
+        {
+            $match: {
+                _id: new ObjectId(id),
+                tags: tags,
+            },
+        },
+              {
+                  $lookup: {
+                      from: "documents",
+                      let: {
+                          id: "$_id",
+                      },
+                      pipeline: [
+                          {
+                              $match: {
+                                  $expr: {
+                                      $eq: ["$user_id", "$$id"]                               
+                                  },                                 
+                              },
+                          },
+                          {
+                              $sort: {
+                                  date: -1,
+                              },
+                          },
+                      ],
+                      as: "documents",
+                  },
+              },
+              {
+                  $addFields: {
+                      documents: "$documents",
+                  },
+              },
+          ]
+      return await users.aggregate(pipeline).next()
+    } catch (e) {
+      console.error(`Something went wrong in getUserByIDWhitTags: ${e}`)
+      throw e
+    }
+  }
 
   static async getNames() {
     let names = []

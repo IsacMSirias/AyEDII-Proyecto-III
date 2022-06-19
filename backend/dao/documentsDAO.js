@@ -16,11 +16,12 @@ export default class DocumentsDAO {
     }
   }
 
-  static async addDocument(userId, docname, document, date, tags ) {
+  static async addDocument(userId, docname, document, date, tags, type) {
     try {
       const documentDoc = { name: docname,
           date: date,
           file: document,
+          type: type,
           tags: tags,
           user_id: ObjectId(userId), }
       console.log(documentDoc)

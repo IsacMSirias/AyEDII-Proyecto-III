@@ -74,4 +74,24 @@ export default class UsersController {
       res.status(500).json({ error: e })
     }
   }
+  static async apiGetUserByIdWhitTags(req, res, next) {
+    try {
+      let id = req.params.id 
+      console.log(id)
+      let tags = req.body.tags
+      console.log(tags[0])
+      let lentags = tags.length
+      console.log(lentags)
+      let user = await UsersDAO.getUsersByIDWhitTags(id, tags, lentags)
+      console.log(user)
+      if (!user) {
+        res.status(404).json({ error: "Not found" })
+        return
+      }
+      res.json(user)
+    } catch (e) {
+      console.log(`api, ${e}`)
+      res.status(500).json({ error: e })
+    }
+  }
 }
