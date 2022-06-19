@@ -109,13 +109,13 @@ export default class UsersDAO {
       throw e
     }
   }
-  static async getUsersByIDWhitTags(id,tags,lentags) {
+  static async getUsersByIDWhitTags(id) {
     try {
       const pipeline = [
         {
             $match: {
                 _id: new ObjectId(id),
-                tags: tags,
+                
             },
         },
               {

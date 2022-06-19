@@ -13,6 +13,14 @@ class UsersDataService {
             }
         });
     }
+    getDocumentsWhitTags(id, tags) {
+        return http.get('/id/tags', {
+        params: {
+                id: id,
+                tags: tags
+            }
+        });
+    }
 
     postUser(user, password) {
         return http.post('', {
