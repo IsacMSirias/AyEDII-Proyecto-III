@@ -111,7 +111,7 @@ NAN_METHOD(compress_LZ77)
     Nan::HandleScope scope;
     Isolate *isolate = info.GetIsolate();
     String::Utf8Value cmd(isolate, info[0]);
-    string input = string(*cmd);
+    const string &input = string(*cmd);
 
     size_t cursor = 0;
     size_t input_size = input.size();
@@ -179,7 +179,7 @@ NAN_METHOD(decompress_LZ77)
     Nan::HandleScope scope;
     Isolate *isolate = info.GetIsolate();
     String::Utf8Value cmd(isolate, info[0]);
-    string input = string(*cmd);
+    const string &input = string(*cmd);
     
     size_t input_size = input.size();
     size_t input_cursor = 0;

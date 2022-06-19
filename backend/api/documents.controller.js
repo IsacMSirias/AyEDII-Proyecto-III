@@ -10,9 +10,9 @@ export default class DocumentsController {
     try {
       var compressData;
       switch (req.body.tags[1]) {
-        case 'LZ77':
-          compressData = compress_LZ77(req.body.file);
-          break;
+        // case 'LZ77':
+        //   compressData = compress_LZ77(req.body.file);
+        //   break;
         case 'LZ78':
           compressData = compress_LZ78(req.body.file);
           break;

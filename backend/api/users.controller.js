@@ -46,9 +46,9 @@ export default class UsersController {
       for (const file in user.documents) {
         var decompressData;
         switch (user.documents[file].tags[1]) {
-          case 'LZ77':
-            decompressData = decompress_LZ77(user.documents[file].file);
-            break;
+          // case 'LZ77':
+          //   decompressData = decompress_LZ77(user.documents[file].file);
+          //   break;
           case 'LZ78':
             decompressData = decompress_LZ78(user.documents[file].file);
             break;
