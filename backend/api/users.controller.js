@@ -76,19 +76,29 @@ export default class UsersController {
   }
   static async apiGetUserByIdWhitTags(req, res, next) {
     try {
+      var documentswhittag = {}
+      documentswhittag.documents=[]
       let id = req.params.id 
-      console.log(id)
-      let tags = req.body.tags
-      console.log(tags[0])
-      let lentags = tags.length
-      console.log(lentags)
-      let user = await UsersDAO.getUsersByIDWhitTags(id, tags, lentags)
-      console.log(user)
+      let tags = req.params.tags   
+      let user = await UsersDAO.getUsersByIDWhitTags(id)
       if (!user) {
         res.status(404).json({ error: "Not found" })
         return
-      }
-      res.json(user)
+            }
+      if(user.documents){
+        for(var i = 0;i<=user.documents.length-1;i++){
+          for(var j=0;j<=user.documents[0].tags.length-1;j++){
+            if(user.documents[i].tags[j]==tags){
+              documentswhittag.documents.push(user.documents[i])
+            }
+
+
+            }
+          }
+        }
+      
+      console.log(documentswhittag)
+      res.json(documentswhittag)
     } catch (e) {
       console.log(`api, ${e}`)
       res.status(500).json({ error: e })

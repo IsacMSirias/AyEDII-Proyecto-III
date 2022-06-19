@@ -13,6 +13,14 @@ class UsersDataService {
             }
         });
     }
+    getDocumentsWhitTags(id, tags) {
+        return http.get('/id/tags', {
+        params: {
+                id: id,
+                tags: tags
+            }
+        });
+    }
 
     find(query, by = "name", page = 0) {
         return http.get(`restaurants?${by}=${query}&page=${page}`);
